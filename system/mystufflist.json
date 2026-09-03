@@ -1,11 +1,11 @@
 [
 	{
-        "title": "个人网站 biyonfu.github.io",
+        "title": "个人网站（biyonfu.github.io）",
         "description": "对，就是这个网站本身。大家可以看看整个网页的架构，也可以评价一下。<br>因为使用AI做的，所以代码我没法完全看懂😥",
         "link": "https://github.com/biyonfu/biyonfu.github.io"
     },
     {
-        "title": "自建网站黑名单 URL-BlackList",
+        "title": "自建网站黑名单（URL-BlackList）",
         "description": "本项目收集了一大堆风评较差的网址作为黑名单，主要包括了仿冒官网、广告推销、差评软件等。",
         "link": "https://github.com/biyonfu/URL-BlackList"
     },
