@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main.blogux</title>
+    <link rel="stylesheet" href="../system/style1.css">
+</head>
+<body class="page-body">
+    <div class="page-container">
+        <h2 class="page-title">📝 我的文章</h2><p>文章大部分发布在哔哩哔哩，也可能发布在抖音、微博、推特等。</p></br>
+        <div id="blog-list"></div>
+    </div>
+    <script>
+        fetch('../system/bloglist.json')
+            .then(res => {
+                if (!res.ok) throw new Error('加载失败');
+                return res.json();
+            })
+            .then(data => {
+                const container = document.getElementById('blog-list');
+                container.innerHTML = '';
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="color:rgba(255,255,255,0.5);">暂无文章</p>';
+                    return;
+                }
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'card-item';
+                    div.innerHTML = `
+                        <h3>${item.title || '无标题'}</h3>
+                        <div class="meta">${item.date || ''}</div>
+                        <p><br>${item.summary || ''}</p>
+                    `;
+                    container.appendChild(div);
+                });
+            })
+            .catch(err => {
+                document.getElementById('blog-list').innerHTML =
+                    `<p class="error">${err.message}</p>`;
+            });
+    </script>
+</body>
+</html>

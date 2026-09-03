@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main.commentux</title>
+    <link rel="stylesheet" href="../system/style1.css">
+    <style>
+        /* 这种破烂代码我已经懒得改了，因为直接把样式和脚本嵌入在一个html是ai的天性 */
+        .commentact-container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .comment-item {
+            background: rgba(255,255,255,0.04);
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.2s;
+        }
+        .comment-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .comment-author {
+            font-weight: 600;
+            color: #29cc78;
+            font-size: 16px;
+        }
+        .comment-time {
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+        }
+        .comment-content {
+            color: rgba(255,255,255,0.85);
+            line-height: 1.6;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .action-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+        .action-btn.liked {
+            color: #29cc78;
+        }
+        .action-btn .count {
+            margin-left: 2px;
+        }
+
+        .reply-section {
+            margin-top: 12px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(41,204,120,0.2);
+        }
+        .reply-item {
+            color: rgba(255,255,255,0.75);
+            font-size: 14px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .reply-item .reply-author {
+            color: #a78bfa;
+            margin-right: 10px;
+        }
+        .reply-item .reply-time {
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .reply-item .reply-delete {
+            background: none;
+            border: none;
+            color: rgba(255,100,100,0.5);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .reply-item .reply-delete:hover {
+            color: #ff6b6b;
+        }
+
+        .reply-input-area {
+            display: none;
+            margin-top: 10px;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .reply-input-area.active {
+            display: flex;
+        }
+        .reply-input-area input {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .reply-input-area input:focus {
+            border-color: rgba(41,204,120,0.5);
+        }
+        .reply-input-area .submit-reply {
+            padding: 6px 18px;
+            background: rgba(41,204,120,0.2);
+            border: 1px solid rgba(41,204,120,0.3);
+            border-radius: 30px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .reply-input-area .submit-reply:hover {
+            background: rgba(41,204,120,0.35);
+        }
+
+        .delete-comment-btn {
+            background: none;
+            border: none;
+            color: rgba(255,100,100,0.5);
+            cursor: pointer;
+            font-size: 13px;
+            transition: color 0.2s;
+            margin-left: 6px;
+        }
+        .delete-comment-btn:hover {
+            color: #ff6b6b;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .form-row input {
+            flex: 1;
+            min-width: 150px;
+        }
+        .commentact-form {
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.03);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .empty-tip {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            padding: 30px 0;
+        }
+        .sensitive-warning {
+            color: #ff6b6b;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        .sensitive-warning.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="page-body">
+    <div class="commentact-container">
+        <h2 class="page-title">💬 留言板</h2>
+
+        <!-- 发布留言表单 -->
+        <div class="commentact-form">
+            <div class="form-row">
+                <input type="text" id="guest-name" placeholder="你的名字" style="flex:0.4;">
+                <input type="text" id="guest-message" placeholder="说点什么吧~" style="flex:1;">
+                <button id="submit-guest" class="submit-btn" style="flex:0 0 auto;">发送</button>
+            </div>
+            <div id="sensitive-warning" class="sensitive-warning">⚠️ 包含敏感词，请修改后重试</div>
+        </div>
+
+        <!-- 留言列表 -->
+        <div id="comment-list"></div>
+    </div>
+
+    <script>
+        // ---------- 全局状态 ----------
+        let sensitiveWords = [];          // 存储敏感词列表
+        let comments = [];               // 留言数据 [{id, name, content, time, likes, replies:[{name, content, time}]}]
+        let currentUserName = '';        // 用于记录当前用户名字（用于删除验证）
+
+        // ---------- DOM 引用 ----------
+        const nameInput = document.getElementById('guest-name');
+        const msgInput = document.getElementById('guest-message');
+        const submitBtn = document.getElementById('submit-guest');
+        const warningDiv = document.getElementById('sensitive-warning');
+        const commentList = document.getElementById('comment-list');
+
+        // ---------- 工具函数 ----------
+        function getNow() {
+            return new Date().toLocaleString('zh-CN', { hour12: false });
+        }
+
+        // 生成短ID
+        function genId() {
+            return Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 6);
+        }
+
+        // ---------- 敏感词检测 ----------
+        function hasSensitive(text) {
+            if (!sensitiveWords || sensitiveWords.length === 0) return false;
+            return sensitiveWords.some(word => text.includes(word));
+        }
+
+        // 加载敏感词
+        function loadSensitiveWords() {
+            return fetch('../system/sensitive.json')
+                .then(res => {
+                    if (!res.ok) throw new Error('未能加载敏感词名单。。。');
+                    return res.json();
+                })
+                .then(data => {
+                    sensitiveWords = Array.isArray(data) ? data : [];
+                })
+                .catch(err => {
+                    console.warn('敏感词加载失败，所以就不加载', err);
+                    sensitiveWords = [];
+                });
+        }
+
+        // ---------- 数据持久化 ----------
+        function loadComments() {
+            try {
+                const stored = localStorage.getItem('commentact_comments');
+                if (stored) {
+                    comments = JSON.parse(stored);
+                    // 确保每个留言有 replies 数组（旧数据兼容）
+                    comments.forEach(c => {
+                        if (!c.replies) c.replies = [];
+                        if (c.likes === undefined) c.likes = 0;
+                    });
+                } else {
+                    comments = [];
+                }
+            } catch (e) {
+                comments = [];
+            }
+        }
+
+        function saveComments() {
+            localStorage.setItem('commentact_comments', JSON.stringify(comments));
+        }
+
+        // ---------- 渲染留言列表 ----------
+        function renderComments() {
+            if (comments.length === 0) {
+                commentList.innerHTML = '<div class="empty-tip">还没有留言，快来抢沙发吧 🛋️</div>';
+                return;
+            }
+
+            let html = '';
+            comments.forEach((comment, index) => {
+                const repliesHtml = comment.replies && comment.replies.length > 0 ?
+                    comment.replies.map((reply, ri) => `
+                        <div class="reply-item">
+                            <span>
+                                <span class="reply-author">${escapeHtml(reply.name)}</span>
+                                ${escapeHtml(reply.content)}
+                                <span class="reply-time">${escapeHtml(reply.time)}</span>
+                            </span>
+                            <button class="reply-delete" data-comment-index="${index}" data-reply-index="${ri}" title="删除回复">✕</button>
+                        </div>
+                    `).join('') : '';
+
+                html += `
+                    <div class="comment-item" data-comment-index="${index}">
+                        <div class="comment-header">
+                            <span class="comment-author">${escapeHtml(comment.name)}</span>
+                            <span class="comment-time">${escapeHtml(comment.time)}</span>
+                        </div>
+                        <div class="comment-content">${escapeHtml(comment.content)}</div>
+                        <div class="comment-actions">
+                            <button class="action-btn like-btn ${comment.liked ? 'liked' : ''}" data-index="${index}">
+                                👍 <span class="count">${comment.likes || 0}</span>
+                            </button>
+                            <button class="action-btn reply-toggle" data-index="${index}">💬 回复</button>
+                            <button class="action-btn delete-comment-btn" data-index="${index}">🗑️ 删除</button>
+                        </div>
+                        <div class="reply-section">
+                            ${repliesHtml}
+                            <div class="reply-input-area" data-index="${index}">
+                                <input type="text" class="reply-input" placeholder="输入回复..." />
+                                <button class="submit-reply" data-index="${index}">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            commentList.innerHTML = html;
+
+            // ---------- 绑定事件（委托） ----------
+            // 点赞
+            commentList.querySelectorAll('.like-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.dataset.index);
+                    if (isNaN(idx)) return;
+                    // 切换点赞状态
+                    if (comments[idx].liked) {
+                        comments[idx].likes = Math.max(0, (comments[idx].likes || 0) - 1);
+                        comments[idx].liked = false;
+                    } else {
+                        comments[idx].likes = (comments[idx].likes || 0) + 1;
+                        comments[idx].liked = true;
+                    }
+                    saveComments();
+                    renderComments();
+                });
+            });
+
+            // 回复切换显示
+            commentList.querySelectorAll('.reply-toggle').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.dataset.index);
+                    const area = document.querySelector(`.reply-input-area[data-index="${idx}"]`);
+                    if (area) {
+                        area.classList.toggle('active');
+                        if (area.classList.contains('active')) {
+                            area.querySelector('.reply-input').focus();
+                        }
+                    }
+                });
+            });
+
+            // 提交回复
+            commentList.querySelectorAll('.submit-reply').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.dataset.index);
+                    const area = this.closest('.reply-input-area');
+                    const input = area.querySelector('.reply-input');
+                    const replyText = input.value.trim();
+                    if (!replyText) {
+                        alert('回复内容不能为空');
+                        return;
+                    }
+                    // 敏感词检测
+                    if (hasSensitive(replyText)) {
+                        warningDiv.textContent = '⚠️ 回复包含敏感词，请修改后重试';
+                        warningDiv.classList.add('show');
+                        setTimeout(() => warningDiv.classList.remove('show'), 3000);
+                        return;
+                    }
+                    // 添加回复
+                    const reply = {
+                        name: currentUserName || '匿名',
+                        content: replyText,
+                        time: getNow()
+                    };
+                    if (!comments[idx].replies) comments[idx].replies = [];
+                    comments[idx].replies.push(reply);
+                    saveComments();
+                    renderComments();
+                    // 自动收起回复区域
+                    area.classList.remove('active');
+                });
+            });
+
+            // 删除回复
+            commentList.querySelectorAll('.reply-delete').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const commentIdx = parseInt(this.dataset.commentIndex);
+                    const replyIdx = parseInt(this.dataset.replyIndex);
+                    if (isNaN(commentIdx) || isNaN(replyIdx)) return;
+                    if (!confirm('确定要删除这条回复吗？')) return;
+                    if (comments[commentIdx] && comments[commentIdx].replies) {
+                        comments[commentIdx].replies.splice(replyIdx, 1);
+                        saveComments();
+                        renderComments();
+                    }
+                });
+            });
+
+            // 删除留言（需要验证名字）
+            commentList.querySelectorAll('.delete-comment-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.dataset.index);
+                    if (isNaN(idx)) return;
+                    const comment = comments[idx];
+                    if (!comment) return;
+                    // 验证作者名
+                    const authorName = comment.name;
+                    const inputName = prompt(`请输入留言作者名以确认删除（作者：${authorName}）：`);
+                    if (inputName === null) return; // 取消
+                    if (inputName.trim() !== authorName) {
+                        alert('作者名不匹配，删除失败');
+                        return;
+                    }
+                    if (confirm('确定要删除这条留言及其所有回复吗？')) {
+                        comments.splice(idx, 1);
+                        saveComments();
+                        renderComments();
+                    }
+                });
+            });
+        }
+
+        // 简单的转义防XSS（虽然留言纯文本，但以防万一）
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // ---------- 提交新留言 ----------
+        function submitComment() {
+            const name = nameInput.value.trim() || '匿名';
+            const content = msgInput.value.trim();
+            if (!content) {
+                alert('请填写留言内容');
+                return;
+            }
+            // 敏感词检测
+            if (hasSensitive(content)) {
+                warningDiv.textContent = '⚠️ 留言包含敏感词，请修改后重试';
+                warningDiv.classList.add('show');
+                setTimeout(() => warningDiv.classList.remove('show'), 3000);
+                return;
+            }
+            // 记录当前用户名（用于后续删除验证）
+            currentUserName = name;
+
+            const newComment = {
+                id: genId(),
+                name: name,
+                content: content,
+                time: getNow(),
+                likes: 0,
+                liked: false,
+                replies: []
+            };
+            comments.unshift(newComment); // 最新在前
+            saveComments();
+            renderComments();
+            // 清空输入
+            msgInput.value = '';
+            nameInput.value = '';
+            warningDiv.classList.remove('show');
+        }
+
+        // ---------- 初始化 ----------
+        function init() {
+            // 加载敏感词
+            loadSensitiveWords().then(() => {
+                // 加载留言数据
+                loadComments();
+                renderComments();
+            });
+
+            // 提交事件
+            submitBtn.addEventListener('click', submitComment);
+            // 回车快捷键（在留言输入框按回车提交）
+            msgInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitComment();
+                }
+            });
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    msgInput.focus();
+                }
+            });
+        }
+
+        // 启动
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+.tab-btn {
+    position: relative;
+    background: none;
+    border: none;
+    color: #fff;               /* 文字白色 */
+    padding: 6px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* 底部横线指示器 */
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #29cc78;       /* 前景色 */
+    transition: width 0.3s ease;
+}
+
+/* 激活状态：横线伸展开 */
+.tab-btn.active::after {
+    width: 100%;
+}
+
+/* 悬停时稍微变亮 */
+.tab-btn:hover {
+    color: rgba(255,255,255,0.9);
+}

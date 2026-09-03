@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的作品</title>
+    <link rel="stylesheet" href="../system/style1.css">
+</head>
+<body class="page-body">
+    <div class="page-container">
+        <h2 class="page-title">🛠 我的作品</h2>
+        <div id="works-list"></div>
+    </div>
+    <script>
+        fetch('../system/mystufflist.json')
+            .then(res => {
+                if (!res.ok) throw new Error('加载失败');
+                return res.json();
+            })
+            .then(data => {
+                const container = document.getElementById('works-list');
+                container.innerHTML = '';
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="color:rgba(255,255,255,0.5);">暂无作品</p>';
+                    return;
+                }
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'card-item';
+                    div.innerHTML = `
+                        <h3>${item.title || '未命名'}</h3>
+                        <p>${item.description || ''}</p>
+                        ${item.link ? `<a href="${item.link}" target="_blank">查看项目 →</a>` : ''}
+                    `;
+                    container.appendChild(div);
+                });
+            })
+            .catch(err => {
+                document.getElementById('works-list').innerHTML =
+                    `<p class="error">${err.message}</p>`;
+            });
+    </script>
+</body>
+</html>
