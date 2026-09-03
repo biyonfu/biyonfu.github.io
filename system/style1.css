@@ -19,15 +19,15 @@ body {
 }
 
 /* ---------- 亚克力板 ---------- */
-.glass-panel {
+.acrylic-panel {
     width: 72vw;
     height: 72vh;
-    background: rgba(20, 20, 20, 3);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    background: rgba(48, 48, 48, 12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 1px;
     /* 无边框 */
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
     padding: 24px 28px 28px 28px;
     display: flex;
     flex-direction: column;
@@ -267,7 +267,7 @@ body {
 
 /* 响应式调整 */
 @media (max-width: 768px) {
-    .glass-panel {
+    .acrylic-panel {
         width: 92vw;
         height: 80vh;
         padding: 16px;
