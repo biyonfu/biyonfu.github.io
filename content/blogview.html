@@ -30,7 +30,8 @@
                     div.innerHTML = `
                         <h3>${item.title || '无标题'}</h3>
                         <div class="meta">${item.date || ''}</div>
-                        <p><br>${item.summary || ''}</p>
+                        <p><br>${item.blgcontent || ''}</p>
+						<p><br><br>${item.linkfor || ''}</p>
                     `;
                     container.appendChild(div);
                 });
