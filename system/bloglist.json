@@ -2,21 +2,25 @@
      {
         "title": "如何在MC里看网站、以及配置远程环境实现MC中玩游戏。",
         "date": "Aug 8 2026",
-        "summary": "想要在MC中看网页打游戏吗？本期视频不仅有如何下载使用模组的教程、还讲述了自建远程环境的步骤。<br><br><a href=\"https://bilibili.com/video/BV1R2uP6fEsP\" target=\"_blank\" style=\"color: #ffffff;\">▶ 哔哩哔哩</a>　<a href=\"https://www.youtube.com/watch?v=O_6fTeu_N-U\" target=\"_blank\" style=\"color: #ffffff;\">▶ YouTube</a>　"
+        "blgcontent": "想要在MC中看网页打游戏吗？本期视频不仅有如何下载使用模组的教程、还讲述了自建远程环境的步骤。",
+		"linkfor": "<a href=\"https://bilibili.com/video/BV1R2uP6fEsP\" target=\"_blank\">▶ 哔哩哔哩</a>　<a href=\"https://www.youtube.com/watch?v=O_6fTeu_N-U\" target=\"_blank\">▶ YouTube</a>　"
     },
     {
         "title": "蛋仔派对四周年</a>",
         "date": "Jun 18 2026",
-        "summary": "早就猜到四周年会有一次灾难开场。这不，刚上号就看到蛋仔岛变成了“废墟”<br><br><a href=\"https://bilibili.com/opus/1215254682815954985\" target=\"_blank\" style=\"color: #ffffff;\">▶ 哔哩哔哩</a>　"
+        "blgcontent": "早就猜到四周年会有一次灾难开场。这不，刚上号就看到蛋仔岛变成了“废墟”",
+		"linkfor": "<a href=\"https://bilibili.com/opus/1215254682815954985\" target=\"_blank\">▶ 哔哩哔哩</a>　"
     },
     {
         "title": "蛋仔派对PC端测评，但用的是十年前电脑",
         "date": "Jun 5 2026",
-        "summary": "虽然官方注明了最低配置，但实测用2013年的笔记本电脑也能流畅游戏。<br><br>现在PC端的已知问题：<br>玩法少、穿模、碰撞识别不正确。<br>穿模问题可能仅限于旧平台，在主力机(11代平台)测试未能复现。<br><br><a href=\"https://bilibili.com/video/BV1Jq7y6qEpr/\" target=\"_blank\" style=\"color: #ffffff;\">▶ 哔哩哔哩</a>　<a href=\"https://www.youtube.com/watch?v=vszOmvvTjn0\" target=\"_blank\" style=\"color: #ffffff;\">▶ YouTube</a>　"
+        "blgcontent": "虽然官方注明了最低配置，但实测用2013年的笔记本电脑也能流畅游戏。<br><br>现在PC端的已知问题：<br>玩法少、穿模、碰撞识别不正确。<br>穿模问题可能仅限于旧平台，在主力机(11代平台)测试未能复现。",
+		"linkfor": "<a href=\"https://bilibili.com/video/BV1Jq7y6qEpr/\" target=\"_blank\">▶ 哔哩哔哩</a>　<a href=\"https://www.youtube.com/watch?v=vszOmvvTjn0\" target=\"_blank\">▶ YouTube</a>　"
     },
     {
         "title": "今天蛋仔派对上架了PC端",
         "date": "Jun 5 2026",
-        "summary": "今天蛋仔派对上架了PC端，试了一下，功能很少，而且能设置的键位有限。最后我还是用回了模拟器，发现模拟器竟然比PC端还流畅[笑]<br><br><a href=\"https://bilibili.com/opus/1210052631329767424\" target=\"_blank\" style=\"color: #ffffff;\">▶ 哔哩哔哩</a>　"
+        "blgcontent": "今天蛋仔派对上架了PC端，试了一下，功能很少，而且能设置的键位有限。最后我还是用回了模拟器，发现模拟器竟然比PC端还流畅[笑]",
+		"linkfor": "<a href=\"https://bilibili.com/opus/1210052631329767424\" target=\"_blank\">▶ 哔哩哔哩</a>　"
     }
 ]
