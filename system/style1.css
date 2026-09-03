@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../content/bgimg0.jpg');
+    background-image: url('../content/bgimg2.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -18,13 +18,13 @@ body {
     padding: 20px;
 }
 
-/* ---------- 亚克力板 ---------- */
+/* ---------- dwm亚克力板 ---------- */
 .acrylic-panel {
     width: 72vw;
     height: 72vh;
-    background: rgba(48, 48, 48, 12);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(48, 48, 48, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border-radius: 1px;
     /* 无边框 */
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
